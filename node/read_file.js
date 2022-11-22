@@ -5,5 +5,5 @@ try {
 	const content = fs.readFileSync('test.txt')
 	console.log(content)
 } catch (err) {
-	console.log(err)
+	console.error(err)
 }
