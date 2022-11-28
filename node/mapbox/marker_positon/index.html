@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset='utf-8' />
+	<title>Marker position update in Mapbox GL JS</title>
+	<meta name='viewport' content='width=device-width, initial-scale=1' />
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+	<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js'></script>
+	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css' rel='stylesheet' />
+
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		#map {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			width: 100%;
+		}
+
+		.marker {
+			background-image: url('mapbox-icon.png');
+			background-size: cover;
+			width: 50px;
+			height: 50px;
+			border-radius: 50%;
+			cursor: pointer;
+		}
+	</style>
+</head>
+
+<body>
+	<div id='map'></div>
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiYWRhbS1obGF2YXRvdmljIiwiYSI6ImNsYXdicHJ5eTBkc2ozb2xpcTliNnhxNDMifQ.zq11onVb-SAvtFeApMhHAg'
+
+const map = new mapboxgl.Map({
+	container: 'map',
+	style: 'mapbox://styles/mapbox/light-v11',
+	center: [-96, 37.8],
+	zoom: 3
+})
+
+// define from/to positions as [longitude, latitude] pairs
+const washingtonPos = [-77.032, 38.913]
+const sanFranciscoPos = [-122.414, 37.776]
+
+// define marker position
+const geojson = {
+	type: 'FeatureCollection',
+	features: [{
+		type: 'Feature',
+		geometry: {
+			type: 'Point',
+			coordinates: washingtonPos
+		},
+		properties: {
+			title: 'Mapbox',
+			description: 'Marker position'
+		}
+	}]
+}
+
+const el = document.createElement('div');
+el.className = 'marker';
+
+const marker = new mapboxgl.Marker(el)
+	.setLngLat(geojson.features[0].geometry.coordinates)
+	.addTo(map)
+
+
+const dt = 1/60  // in s
+const simulationDuration = 20  // in s
+let t = 0  // simulation time in s
+
+setInterval(() => {
+	// calculate new marker position
+	t += dt
+	const k = t/simulationDuration
+	const pos = [
+		washingtonPos[0] + k*(sanFranciscoPos[0] - washingtonPos[0]),
+		washingtonPos[1] + k*(sanFranciscoPos[1] - washingtonPos[1])
+	]
+	marker.setLngLat(pos)  // update marker position
+
+	if (t >= simulationDuration)
+		t = 0  // start over again
+
+}, dt*1000)
+
+</script>
+
+</body>
+
+</html>

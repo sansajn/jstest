@@ -1,18 +1,13 @@
 Mapbox [Add custom markers in Mapbox GL JS](https://docs.mapbox.com/help/tutorials/custom-markers-gl-js/) tutorial implementation with Node.js and express HTTP server.
 
-Prepare Node.js project with
+Prepare Node.js project and install Node.js dependencies with
 
 ```bash
 npm init --yes
-```
-
-command. Install express with
-
-```bash
 npm install express --save
 ```
 
-command.
+commands. The `install` command will place Node.js paskages to `node_modules` so do not forget to add it to the git ignore list `.gitignore`.
 
 Setup HTTP server skeleton code in `app.js` just to serve `index.html` file from disk this way
 
@@ -166,7 +161,7 @@ command and refresh the web page. This time you should see marker placed over *W
 
 ![Map wiev with marker on the screen](docs/map_with_marker.jpg)
 
-In the next article I will show how to dynamically update cursor position in the map.
+In the next article I will show how to dynamically update marker position in the map.
 
 See you soon.
 
