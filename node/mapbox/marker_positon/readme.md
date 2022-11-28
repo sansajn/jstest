@@ -4,6 +4,15 @@ The sample shows how to dynamically update marker position between two locations
 
 Lets start with previous [`custom_markers`](https://github.com/sansajn/jstest/tree/main/node/mapbox/custom_markers) sample.
 
+Initialize project directory with
+
+```bash
+npm init --yes
+npm install express --save
+```
+
+commands.
+
 Copy `index.html`, `app.js` and `public` directory to the project `marker_position` directory.
 
 Now run the sample with
