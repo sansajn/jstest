@@ -1,0 +1,19 @@
+<html><head>
+	<script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>Hello!
+
+<script>  // client part
+
+const server = io()
+
+server.on('test', (msg) => {
+	console.info(`>> ${msg}`)
+})
+
+</script>
+
+</body>
+
+</html>
