@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset='utf-8' />
+	<title>Draw points sample</title>
+	<meta name='viewport' content='width=device-width, initial-scale=1' />
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+	<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js'></script>
+	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css' rel='stylesheet' />
+
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		#map {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			width: 100%;
+		}
+	</style>
+</head>
+
+<body>
+	<div id='map'></div>
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiYWRhbS1obGF2YXRvdmljIiwiYSI6ImNsYXdicHJ5eTBkc2ozb2xpcTliNnhxNDMifQ.zq11onVb-SAvtFeApMhHAg'
+
+const praguePos = [14.42076, 50.08804]  // (lon, lat)
+const amsterdamPos = [4.88969, 52.37403]
+const berlinPos = [13.41053, 52.52437]
+
+const map = new mapboxgl.Map({
+	container: 'map',
+	style: 'mapbox://styles/mapbox/light-v11',
+	center: praguePos,
+	zoom: 3
+})
+
+// define linestring for measure
+const geojson = {
+	type: 'FeatureCollection',
+	features: []
+}
+
+const points = [praguePos, amsterdamPos, berlinPos]
+
+points.map(pos => {
+	const point = {
+		type: 'Feature',
+		geometry: {
+			type: 'Point',
+			coordinates: pos
+		}
+	}
+	return point	
+}).forEach(point => {
+	geojson.features.push(point)
+})
+
+const geojsonSource = 'geojson'
+
+map.on('load', () => {
+	map.addSource(geojsonSource, {
+		type: 'geojson',
+		data: geojson
+	})
+
+	map.addLayer({
+		id: 'points',
+		type: 'circle',
+		source: geojsonSource,
+		paint: {
+			'circle-radius': 5,  // in points
+			'circle-color': '#000'
+		},
+		filter: ['in', '$type', 'Point']  // TODO: do we need it?
+	})
+})
+
+</script>
+
+</body>
+
+</html>
