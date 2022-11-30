@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+	<meta charset='utf-8' />
+	<title>Create interactive hover effects with Mapbox GL JS</title>
+	<meta name='viewport' content='width=device-width, initial-scale=1' />
+	<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js'></script>
+	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css' rel='stylesheet' />
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		#map {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			width: 100%;
+		}
+
+		.quake-info {
+			position: absolute;
+			font-family: sans-serif;
+			margin-top: 5px;
+			margin-left: 5px;
+			padding: 5px;
+			width: 30%;
+			border: 2px solid black;
+			font-size: 14px;
+			color: #222;
+			background-color: #fff;
+			border-radius: 3px;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div id='map'></div>
+
+	<!-- UI to display earthquake info -->
+	<div class='quake-info'>
+		<div><strong>Magnitude:</strong> <span id='mag'></span></div>
+		<div><strong>Location:</strong> <span id='loc'></span></div>
+		<div><strong>Date:</strong> <span id='date'></span></div>
+	 </div>
+	 
+
+<script>
+
+// initialize map view
+mapboxgl.accessToken = 'pk.eyJ1IjoiYWRhbS1obGF2YXRvdmljIiwiYSI6ImNsYXdicHJ5eTBkc2ozb2xpcTliNnhxNDMifQ.zq11onVb-SAvtFeApMhHAg';
+const map = new mapboxgl.Map({
+	container: 'map', // Specify the container ID
+	style: 'mapbox://styles/mapbox/outdoors-v12', // Specify which map style to use
+	center: [-122.44121, 37.76132], // Specify the starting position [lng, lat]
+	zoom: 3.5 // Specify the starting zoom
+})
+
+const magDisplay = document.getElementById('mag')
+const locDisplay = document.getElementById('loc')
+const dateDisplay = document.getElementById('date')
+
+const today = new Date()
+const priorDate = new Date().setDate(today.getDate() - 7)  // get the date a week ago
+
+// Set that to an ISO8601 timestamp as required by the USGS earthquake API
+const priorDateTs = new Date(priorDate)
+const sevenDaysAgo = priorDateTs.toISOString()  // TODO: can we use priorDate instead of priorDateTs?
+
+// load earthquake source after the map is loaded
+map.on('load', () => {
+	map.addSource('earthquakes', {
+		type: 'geojson',
+		data: `https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&minmagnitude=1&starttime=${sevenDaysAgo}`,
+		generateId: true  // This ensures that all features have unique IDs
+	})
+
+	map.addLayer({
+		id: 'earthquakes-viz',
+		type: 'circle',
+		source: 'earthquakes',
+		paint: {
+			// The feature-state dependent circle-radius expression will render
+			// the radius size according to its magnitude when
+			// a feature's hover state is set to true
+			'circle-radius': [
+				'case',
+				['boolean', ['feature-state', 'hover'], false],	[
+					'interpolate',
+					['linear'],
+					['get', 'mag'],
+					1,	8,
+					1.5, 10,
+					2,	12,
+					2.5, 14,
+					3,	16,
+					3.5, 18,
+					4.5, 20,
+					6.5, 22,
+					8.5, 24,
+					10.5,	26],
+				5
+			],
+			'circle-stroke-color': '#000',
+			'circle-stroke-width': 1,
+			// The feature-state dependent circle-color expression will render
+			// the color according to its magnitude when
+			// a feature's hover state is set to true
+			'circle-color': [
+				'case',
+				['boolean', ['feature-state', 'hover'], false], [
+					'interpolate',
+					['linear'],
+					['get', 'mag'],
+					1,	'#fff7ec',
+					1.5, '#fee8c8',
+					2,	'#fdd49e',
+					2.5, '#fdbb84',
+					3,	'#fc8d59',
+					3.5, '#ef6548',
+					4.5, '#d7301f',
+					6.5, '#b30000',
+					8.5, '#7f0000',
+					10.5,	'#000'],
+				'#000'
+			]
+		}
+	})
+})
+
+let quakeID = null  // signalize we are hovering on some earthquake marker
+
+map.on('mousemove', 'earthquakes-viz', (event) => {
+	map.getCanvas().style.cursor = 'pointer'
+	
+	// Set constants equal to the current feature's magnitude, location, and time
+	const quakeMagnitude = event.features[0].properties.mag
+	const quakeLocation = event.features[0].properties.place
+	const quakeDate = new Date(event.features[0].properties.time)
+
+	// Check whether features exist
+	if (event.features.length === 0) return;
+
+	// Display the magnitude, location, and time in the sidebar
+	magDisplay.textContent = quakeMagnitude
+	locDisplay.textContent = quakeLocation
+	dateDisplay.textContent = quakeDate
+
+	// If quakeID for the hovered feature is not null,
+	// use removeFeatureState to reset to the default behavior
+	if (quakeID) {
+		map.removeFeatureState({
+			source: 'earthquakes',
+			id: quakeID
+		})
+	}
+
+	quakeID = event.features[0].id
+
+	map.setFeatureState({
+		source: 'earthquakes',
+		id: quakeID
+	}, {
+		hover: true
+	})
+})
+
+map.on('mouseleave', 'earthquakes-viz', () => {
+	if (quakeID) {
+		map.setFeatureState({
+			source: 'earthquakes',
+			id: quakeID
+		}, {
+			hover: false
+      })
+	}
+
+	quakeID = null
+
+	// Remove the information from the previously hovered feature from the sidebar
+	magDisplay.textContent = ''
+	locDisplay.textContent = ''
+	dateDisplay.textContent = ''
+
+	// Reset the cursor style
+	map.getCanvas().style.cursor = ''
+})
+
+
+</script>
+
+</body>
+
+</html>
