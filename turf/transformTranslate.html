@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset='utf-8' />
+	<title>Turf transformTranslate sample</title>
+	<meta name='viewport' content='width=device-width, initial-scale=1' />
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+	<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js'></script>
+	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css' rel='stylesheet' />
+	<script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		#map {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			width: 100%;
+		}
+	</style>
+</head>
+
+<body>
+	
+	<div id='map'></div>
+	
+<script>
+
+const praguePos = [14.42076, 50.08804]  // (lon, lat)
+
+const p = turf.point(praguePos)
+const p2 = turf.transformTranslate(p, 1, 45)  // move 1km in a 45 degrees direction from north counter clockwise
+
+console.debug(`p: ${p}`)
+console.debug(`p2: ${p2}`)
+
+const distance = turf.length(turf.lineString([p, p2]))
+console.debug(`distance: ${distance}km`)
+
+// show on map
+mapboxgl.accessToken = 'pk.eyJ1IjoiYWRhbS1obGF2YXRvdmljIiwiYSI6ImNsYXdicHJ5eTBkc2ozb2xpcTliNnhxNDMifQ.zq11onVb-SAvtFeApMhHAg'
+
+const map = new mapboxgl.Map({
+	container: 'map',
+	style: 'mapbox://styles/mapbox/light-v11',
+	center: praguePos,
+	zoom: 13
+})
+
+// visualize our line in map
+const geojson = {
+	type: 'FeatureCollection',
+	features: []
+}
+
+geojson.features.push(p)
+geojson.features.push(p2)
+
+const geojsonSource = 'geojson'
+
+map.on('load', () => {
+	map.addSource(geojsonSource, {
+		type: 'geojson',
+		data: geojson
+	})
+
+	map.addLayer({
+		id: 'points',
+		type: 'circle',
+		source: geojsonSource,
+		paint: {
+			'circle-radius': 5,  // in points
+			'circle-color': '#000'
+		}
+	})
+})
+
+
+
+</script>
+
+</body>
+
+</html>
