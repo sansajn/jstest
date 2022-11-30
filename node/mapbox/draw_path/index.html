@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset='utf-8' />
+	<title>Draw points sample</title>
+	<meta name='viewport' content='width=device-width, initial-scale=1' />
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+	<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js'></script>
+	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css' rel='stylesheet' />
+
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		#map {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			width: 100%;
+		}
+	</style>
+</head>
+
+<body>
+	<div id='map'></div>
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiYWRhbS1obGF2YXRvdmljIiwiYSI6ImNsYXdicHJ5eTBkc2ozb2xpcTliNnhxNDMifQ.zq11onVb-SAvtFeApMhHAg'
+
+const praguePos = [14.42076, 50.08804]  // (lon, lat)
+const amsterdamPos = [4.88969, 52.37403]
+const berlinPos = [13.41053, 52.52437]
+
+const map = new mapboxgl.Map({
+	container: 'map',
+	style: 'mapbox://styles/mapbox/light-v11',
+	center: praguePos,
+	zoom: 3
+})
+
+// define path linestring
+const geojsonPath = {
+	type: 'FeatureCollection',
+	features: []
+}
+
+const path = {
+	'type': 'Feature',
+	'geometry': {
+		'type': 'LineString',
+		'coordinates': [praguePos, amsterdamPos, berlinPos]
+	}
+}
+
+geojsonPath.features.push(path)
+
+const geojsonSource = 'path'
+
+map.on('load', () => {
+	map.addSource(geojsonSource, {
+		type: 'geojson',
+		data: geojsonPath
+	})
+
+	map.addLayer({
+		id: 'path',
+		type: 'line',
+		source: geojsonSource,
+		layout: {
+			'line-cap': 'round',
+			'line-join': 'round'
+		},
+		paint: {
+			'line-color': '#000',
+			'line-width': 2.5  // in points
+		}
+	})
+})
+
+</script>
+
+</body>
+
+</html>

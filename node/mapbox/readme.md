@@ -5,3 +5,4 @@ Samples
 - `distance`
 - `interactive_hover`
 - `draw_points`
+- `draw_path`
