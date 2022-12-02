@@ -39,13 +39,13 @@ function gpxLoadPoints(gpxFile) {
 
 // saves list of {lat, lon, time} points to a GPX file
 function gpxSavePoints(points, gpxFile) {
-	const gpx = {
+	const gpx = {gpx: {
 		$: {
 			'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
 			xmlns: 'http://www.topografix.com/GPX/1/1',
 			'xsi:schemaLocation': 'http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd http://www.topografix.com/GPX/gpx_style/0/2 http://www.topografix.com/GPX/gpx_style/0/2/gpx_style.xsd',
 			'xmlns:gpxtpx': 'http://www.garmin.com/xmlschemas/TrackPointExtension/v1',
-      	'xmlns-:gpxx': 'http://www.garmin.com/xmlschemas/GpxExtensions/v3',
+      	'xmlns:gpxx': 'http://www.garmin.com/xmlschemas/GpxExtensions/v3',
       	'xmlns:gpx_style': 'http://www.topografix.com/GPX/gpx_style/0/2',
       	version: '1.1',
 			creator: 'GPX sample app'
@@ -60,7 +60,7 @@ function gpxSavePoints(points, gpxFile) {
 				})
 			}]
 		}]
-	}
+	}}
 
 	// convert gpx to xml
 	const xmlBuilder = new xml2js.Builder()
