@@ -39,6 +39,8 @@ function gpxLoadPoints(gpxFile) {
 
 // saves list of {lat, lon, time} points to a GPX file
 function gpxSavePoints(points, gpxFile) {
+	const now = Date.now()
+	
 	const gpx = {gpx: {
 		$: {
 			'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
@@ -55,7 +57,8 @@ function gpxSavePoints(points, gpxFile) {
 				trkpt: points.map(point => {
 					return {
 						$: {lat: point.lat, lon: point.lon},
-						time: point.time
+						time: new Date(now + (point.time * 1000))
+							.toISOString()
 					}
 				})
 			}]
