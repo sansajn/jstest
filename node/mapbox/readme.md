@@ -6,3 +6,4 @@ Samples
 - `interactive_hover`
 - `draw_points`
 - `draw_path`
+- `linterp_position`
