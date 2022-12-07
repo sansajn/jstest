@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<script>
+
+const serverURL = '/upload'
+
+function uploadFirstFile(files) {
+	console.assert(files.length > 0, 'we expect at least one file selected')
+
+	// send first file
+	const file = files[0]
+	console.info(`sending '${file.name}' file`)
+	
+	const form = new FormData()
+	form.append('sampleFile', file)  // file can be found as `req.files.sampleFile` on express side
+
+	const http = new XMLHttpRequest()
+	http.open('POST', serverURL)
+	http.send(form)
+}
+
+</script>
+		
+
+
+</head>
+
+<body>
+
+With *form* and *submit* button<br/>
+<form ref='uploadForm' id='uploadForm' action='http://localhost:8000/upload' method='post'
+	encType="multipart/form-data">
+	<input type="file" name="sampleFile" />
+	<input type='submit' value='Upload!' />
+</form>
+
+<br/>
+<br/>
+
+With `XMLHttpRequest` JS object<br/>
+<input type="file" onChange="uploadFirstFile(this.files)" />
+
+</body>
+
+</html>
