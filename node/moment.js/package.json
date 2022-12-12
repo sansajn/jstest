@@ -1,0 +1,20 @@
+{
+  "name": "moment",
+  "description": "Initialize Node.js project and install dependencies with",
+  "version": "1.0.0",
+  "main": "app.js",
+  "dependencies": {
+    "moment": "^2.29.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "scripts": {
+    "dev": "nodemon app.js",
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
