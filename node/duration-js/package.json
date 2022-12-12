@@ -1,0 +1,21 @@
+{
+  "name": "duration",
+  "version": "1.0.0",
+  "description": "[Duration-js](https://www.npmjs.com/package/duration-js) library samples. Duration-js is a library for working with time durations.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "@icholy/duration": "^5.1.0"
+  }
+}
