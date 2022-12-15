@@ -7,6 +7,6 @@ Directory for [Mapbox](mapbox.com) samples
 - `default_marker.html`: Mapbox map view with default marker in it.
 
 - `popup.html`: Marker popup sample.
-
 - `3d_terrain.html`: 3D terrain sample.
+- `map_with_button.html`: Map view with button in top left corner.
 

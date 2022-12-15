@@ -1,0 +1,63 @@
+<!-- Map with button -->
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Map with button</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.js"></script>
+<style>
+body { margin: 0; padding: 0; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; z-index: -1}
+
+.openbtn {
+	font-size: 20px;
+	cursor: pointer;
+	//background-color: #111;
+	//color: white;
+	padding: 5px 12px;
+	border: none;
+}
+
+</style>
+</head>
+
+<body>
+<div id="main">
+	<div id="map"></div>
+	<button class="openbtn" onclick="openNav()">&#9776;</button>
+</div>
+
+<script>
+	
+const praguePos = [14.42076, 50.08804]  // [lon, lat]
+
+mapboxgl.accessToken = 'pk.eyJ1IjoiYWRhbS1obGF2YXRvdmljIiwiYSI6ImNsYXdicHJ5eTBkc2ozb2xpcTliNnhxNDMifQ.zq11onVb-SAvtFeApMhHAg';
+const map = new mapboxgl.Map({
+	container: 'map', // div container ID
+	style: 'mapbox://styles/mapbox/streets-v12', // style URL
+	center: praguePos,
+	zoom: 7 // starting zoom
+})
+
+// place prague position marker
+const marker = new mapboxgl.Marker()
+	.setLngLat(praguePos)
+	.addTo(map)
+
+map.on('load', () => {
+	map.setFog({})
+})
+
+
+function openNav() {
+	console.debug('button clicked ...')
+}
+
+</script>
+ 
+</body>
+
+</html>
