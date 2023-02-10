@@ -1,4 +1,8 @@
-This directory contains 
+This directory contains following
+
+## Language
+
+- `regex_match.js` Regular expression matching sample (also with groups).
 
 ## Pattern
 
