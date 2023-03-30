@@ -18,3 +18,18 @@ console.assert(found.length === 4)
 
 d1.setHours(parseInt(found[1]), parseInt(found[2]), parseInt(found[3]))
 console.log(`d1: ${d1}`)
+
+// get time part
+
+// returns 'hh:mm:ss' part of `d` Date object as string
+function getTime(d) {
+	return ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2) + ':' + ('0' + d.getSeconds()).slice(-2)
+}
+
+console.log(getTime(d1))
+
+// parse sample
+const d = new Date(Date.parse('2022-10-21T05:15:49Z'))
+console.log(d.toString())
+
+

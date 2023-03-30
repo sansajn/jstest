@@ -11,5 +11,5 @@ Directory for [Mapbox](mapbox.com) samples
 - `3d_map.html`: 3D map sample (not sattelite).
 - `map_with_button.html`: Map view with button in top left corner.
 - `animate_camera.html`: camera animation along a path sample
-
+- `variable_label_placement_sample.html`: Custom label layer sample.
 
