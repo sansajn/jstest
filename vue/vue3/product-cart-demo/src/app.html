@@ -69,13 +69,15 @@
                     <label>Quantity:</label>
                   </div>
                   <div class="cell">
-                    <input type="number" v-model="inventory.carrots">
+                    <input type="number" v-model.number="inventory.carrots">
                   </div>
                 </div>
               </form>
             </div>
             <div class="card-footer">
-              <button class="btn btn-light">Add to cart</button>
+              <button @click="addToCard('carrots')" class="btn btn-light">
+                Add to cart
+              </button>
             </div>
           </div>
 
@@ -107,7 +109,7 @@
                     <label>Quantity:</label>
                   </div>
                   <div class="cell">
-                    <input type="number" v-model="inventory.pineaples">
+                    <input type="number" v-model.number="inventory.pineaples">
                   </div>
                 </div>
               </form>
@@ -145,7 +147,7 @@
                     <label>Quantity:</label>
                   </div>
                   <div class="cell">
-                    <input type="number" v-model="inventory.cherries">
+                    <input type="number" v-model.number="inventory.cherries">
                   </div>
                 </div>
               </form>
@@ -170,10 +172,23 @@
         data() {
           return {
             inventory: {
-              carrots: 3,
+              carrots: 0,
+              pineaples: 0,
+              cherries: 0
+            },
+
+            cart: {
+              carrots: 0,
               pineaples: 0,
               cherries: 0
             }
+          }
+        },
+
+        methods: {
+          addToCard(type) {
+            this.cart[type] += this.inventory[type]
+            console.log(this.cart)
           }
         }
       })
