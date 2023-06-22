@@ -1,0 +1,90 @@
+<!-- components: code from 29min -->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Vue 3 Basics (20min+)</title>
+		<style>
+			.box {
+				background-color: purple;
+				height: 200px;
+				width: 200px;
+			}
+			.box.two {
+				background-color: red;
+			}
+			.box.three {
+				background-color: blue;
+			}
+			[v-cloak] {
+				display: none
+			}
+
+			input {
+				margin: 10px;
+				display: block;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app" v-cloak>
+			<login-form />
+
+			<hr />
+
+			<button v-on:click="toggleBox">Toggle Box</button>
+			<div v-if="isVisibe" class="box"></div>
+
+		</div>
+
+		<script src="https://unpkg.com/vue@next"></script>
+		<script>
+
+let app = Vue.createApp({
+	data: function() {
+		return {
+			greeting: 'Hello Vue 3!',
+			isVisibe: false
+		}
+	},
+
+	methods: {
+		toggleBox() {
+			this.isVisibe = !this.isVisibe
+		},
+
+		greet() {
+			console.log(this.greeting)
+		}
+	}
+})
+
+app.component('login-form', {
+	template: `
+		<form @submit.prevent="handleSubmit">
+			<h1>{{ title }}</h1>
+			<input type="email" v-model="email" />
+			<input type="password" v-model="password" />
+			<button>Log in</button>
+		</form>
+	`,
+	
+	data() {
+		return {
+			title: 'Login Form',
+			email: '',
+			password: ''
+		}
+	},
+
+	methods: {
+		handleSubmit() {
+			console.log(`${this.email}:${this.password}`)
+		}
+	}
+})
+
+app.mount('#app')
+
+		</script>
+	</body>
+</html>

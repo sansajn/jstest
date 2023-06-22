@@ -1,0 +1,60 @@
+<!-- events & methods: code from 20min to ? -->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Vue 3 Basics (20min+)</title>
+		<style>
+			.box {
+				background-color: purple;
+				height: 200px;
+				width: 200px;
+			}
+			.box.two {
+				background-color: red;
+			}
+			.box.three {
+				background-color: blue;
+			}
+			[v-cloak] {
+				display: none
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app" v-cloak>
+			{{ greeting }}
+			<input @keyup.enter="greet" v-model="greeting" />
+
+			<hr />
+
+			<button v-on:click="toggleBox">Toggle Box</button>
+			<div v-if="isVisibe" class="box"></div>
+
+		</div>
+
+		<script src="https://unpkg.com/vue@next"></script>
+		<script>
+
+let app = Vue.createApp({
+	data: function() {
+		return {
+			greeting: 'Hello Vue 3!',
+			isVisibe: false
+		}
+	},
+
+	methods: {
+		toggleBox() {
+			this.isVisibe = !this.isVisibe
+		},
+
+		greet() {
+			console.log(this.greeting)
+		}
+	}
+})
+app.mount('#app')
+
+		</script>
+	</body>
+</html>

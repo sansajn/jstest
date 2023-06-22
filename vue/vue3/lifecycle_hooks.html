@@ -1,0 +1,66 @@
+<!-- lifecycle hooks: code from 1h6min -->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Vue 3 Basics</title>
+		<style>
+			.box {
+				background-color: purple;
+				height: 200px;
+				width: 200px;
+			}
+			[v-cloak] {
+				display: none
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app" v-cloak>
+			<button @click="toggleBox">Toggle Box</button>
+			<test-box v-if="isVisibe"></div>
+		</div>
+
+		<script src="https://unpkg.com/vue@next"></script>
+		<script>
+
+let app = Vue.createApp({
+	data() {
+		return {
+			isVisibe: false
+		}
+	},
+
+	methods: {
+		toggleBox() {
+			this.isVisibe = !this.isVisibe
+		}
+	},
+
+	updated() {  // event hook
+		console.log('updated')
+	}
+})
+
+app.component('test-box', {
+	template: `
+		<div class="box"></div>
+	`,
+	// lifecycle hooks
+	created() {
+		console.log('created')
+	},
+	
+	mounted() {
+		console.log('mounted')
+	},
+
+	unmounted() {
+		console.log('unmounted')
+	}
+})
+
+app.mount('#app')
+
+		</script>
+	</body>
+</html>
