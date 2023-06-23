@@ -46,7 +46,7 @@
             </form>
           </div>
           <div class="card-footer">
-            <button @click="addToCard(product.name, idx)" class="btn btn-light">
+            <button @click="addToCart(product.name, idx)" class="btn btn-light">
               Add to cart
             </button>
           </div>
@@ -62,6 +62,6 @@
 <script>
 export default {
   name: 'Home',
-  props: ['inventory']
+  props: ['inventory', 'addToCart']
 }
 </script>

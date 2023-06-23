@@ -18,7 +18,7 @@
     </div>
   </header>
 
-  <router-view :inventory="inventory" />
+  <router-view :inventory="inventory" :addToCart="addToCart"/>
 
   <Sidebar v-if="showSidebar" :toggle="toggleSidebar" :cart="cart" :inventory="inventory" :remove="removeItem" />
 </template>
@@ -50,7 +50,7 @@ export default {
 	},
 
   methods: {
-    addToCard(name, idx) {
+    addToCart(name, idx) {
       if (!this.cart[name]) this.cart[name] = 0
       this.cart[name] += this.inventory[idx].quantity
       this.inventory[idx].quantity = 0
