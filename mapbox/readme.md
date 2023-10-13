@@ -1,5 +1,7 @@
 Directory for [Mapbox](mapbox.com) samples
 
+> **note**: there are more samples in `node/mapbox` directory
+
 - `hello.html`: shows map element
 - `default_marker.html`: Mapbox map view with default marker in it.
 - `popup.html`: Marker popup sample.
